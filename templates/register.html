@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text css" href="{{ url_for('static', filename='styles.css') }}">
+  <title>Register - UNT TechMart</title>
+</head>
+<body>
+  <div class="header">
+    <h1>UNT TechMart</h1>
+  </div>
+  <div class="menu">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('laptops') }}">Laptops</a>
+    <a href="{{ url_for('books') }}">Books</a>
+    <a href="{{ url_for('accessories') }}">Tech Accessories</a>
+  </div>
+  <div class="content">
+    <div class="login-register">
+      <div class="form-container">
+        <h2>Register</h2>
+        <form method="POST" action="/register">
+          <label for="register-username">Username:</label>
+          <input type="text" id="register-username" name="username" required>
+          <label for="register-password">Password:</label>
+          <input type="password" id="register-password" name="password" required>
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

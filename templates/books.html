@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background-color: #0056b3;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      background-color: #0056b3;
+      padding: 10px;
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    .menu a:hover {
+      background-color: #003e82;
+    }
+
+    .content {
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .book-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 45%;
+      margin: 10px;
+    }
+
+    .book-title {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .book-author {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .book-description {
+      margin: 10px 0;
+    }
+
+    .book-price {
+      color: #0056b3;
+      font-size: 1.1em;
+    }
+
+    .book-icon {
+      width: 100px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .order-button {
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .order-button:hover {
+      background-color: #003e82;
+    }
+
+    .purchase-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .purchase-button:hover {
+      background-color: #45a049;
+    }
+
+    .paypal-form {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .paypal-input {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>UNT TechMart</h1>
+  </div>
+  <div class="menu">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('laptops') }}">Laptops</a>
+    <a href="{{ url_for('books') }}">Books</a>
+    <a href="{{ url_for('accessories') }}">Tech Accessories</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+  </div>
+  <div class="content">
+    <div class="book-container">
+      <img src="{{ url_for('static', filename='images/book1.jpeg') }}" alt="Introduction to Programming">
+      <div class="book-title">Introduction to Programming</div>
+      <div class="book-author">Author: BILL GATES</div>
+      <div class="book-description">A comprehensive guide for beginners in programming. Covers fundamental concepts and coding practices.</div>
+      <div class="book-price">$19.99</div>
+      <button class="order-button" data-item="Introduction to Programming" data-price="19.99">Order</button>
+    </div>
+    <div class="book-container">
+      <img src="{{ url_for('static', filename='images/book2.jpeg') }}" alt="Data Structures and Algorithms">
+      <div class="book-title">Data Structures and Algorithms</div>
+      <div class="book-author">Author: kATHLEEN ANN</div>
+      <div class="book-description">Explore advanced data structures and algorithms with real-world examples.</div>
+      <div class="book-price">$24.99</div>
+      <button class="order-button" data-item="Data Structures and Algorithms" data-price="24.99">Order</button>
+    </div>
+    <div class="book-container">
+      <img src="{{ url_for('static', filename='images/book3.jpeg') }}" alt="History of Science">
+      <div class="book-title">History of Science</div>
+      <div class="book-author">Author: MICHAEL COLLINS</div>
+      <div class="book-description">A captivating journey through the history of scientific discoveries and inventions.</div>
+      <div class="book-price">$29.99</div>
+      <button class="order-button" data-item="History of Science" data-price="29.99">Order</button>
+    </div>
+    <div class="book-container">
+      <img src="{{ url_for('static', filename='images/book4.jpeg') }}" alt="The Art of Photography">
+      <div class="book-title">The Art of Photography</div>
+      <div class="book-author">Author: BARRACK OBAMA</div>
+      <div class="book-description">Learn the art of photography from composition to post-processing.</div>
+      <div class="book-price">$21.99</div>
+      <button class="order-button" data-item="The Art of Photography" data-price="21.99">Order</button>
+    </div>
+    <div class="book-container">
+      <img src="{{ url_for('static', filename='images/book5.jpeg') }}" alt="Fictional Adventure">
+      <div class="book-title">Fictional Adventure</div>
+      <div class="book-author">Author: Robert Lewis</div>
+      <div class="book-description">Embark on an exciting adventure with thrilling characters and plot twists.</div>
+      <div class="book-price">$17.99</div>
+      <button class="order-button" data-item="Fictional Adventure" data-price="17.99">Order</button>
+    </div>
+  </div>
+  <div class="order-section">
+    <h2>Your Orders</h2>
+    <ul class="order-list">
+      <!-- Selected items will be added here dynamically -->
+    </ul>
+    <div class="order-total">Total: $<span id="total-amount">0.00</span></div>
+  </div>
+    <button class="purchase-button" onclick="showPaypalForm()">Purchase</button>
+    <div class="paypal-form" id="paypal-form" style="display: none;">
+      <h3>Enter PayPal Details</h3>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="YOUR_PAYPAL_BUTTON_ID">
+        <input type="text" class="paypal-input" name="os0" placeholder="PayPal Email">
+        <input type="text" class="paypal-input" name="os1" placeholder="Shipping Address">
+        <input type="text" class "paypal-input" name="os2" placeholder="Contact Number">
+        <input type="text" class="paypal-input" name="os3" placeholder="Special Instructions">
+        <input type="submit" class="purchase-button" value="Pay with PayPal">
+      </form>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const orderButtons = document.querySelectorAll('.order-button');
+      const orderList = document.querySelector('.order-list');
+      const totalAmount = document.getElementById('total-amount');
+
+      let selectedItems = [];
+      let total = 0.0;
+
+      orderButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const item = button.getAttribute('data-item');
+          const price = parseFloat(button.getAttribute('data-price'));
+
+          if (!selectedItems.includes(item)) {
+            selectedItems.push(item);
+            total += price;
+
+            const listItem = document.createElement('li');
+            const listItemText = `${item} - $${price.toFixed(2)}`;
+            listItem.textContent = listItemText;
+
+            const removeButton = document.createElement('button');
+            removeButton.classList.add('remove-button');
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', function() {
+              const index = selectedItems.indexOf(item);
+              if (index !== -1) {
+                selectedItems.splice(index, 1);
+                total -= price;
+                orderList.removeChild(listItem);
+                totalAmount.textContent = total.toFixed(2);
+              }
+            });
+
+            listItem.appendChild(removeButton);
+            orderList.appendChild(listItem);
+            totalAmount.textContent = total.toFixed(2);
+          }
+        });
+      });
+    });
+    function showPaypalForm() {
+      const paypalForm = document.getElementById('paypal-form');
+      paypalForm.style.display = 'block';
+    }
+  </script>
+</body>
+
+</html>

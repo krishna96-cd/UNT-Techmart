@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background-color: #0056b3;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      background-color: #0056b3;
+      padding: 10px;
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    .menu a:hover {
+      background-color: #003e82;
+    }
+
+    .content {
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .laptop-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 45%;
+      margin: 10px;
+    }
+
+    .laptop-title {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .laptop-description {
+      margin: 10px 0;
+    }
+
+    .laptop-price {
+      color: #0056b3;
+      font-size: 1.1em;
+    }
+
+    .laptop-icon {
+      width: 100px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .order-button {
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .order-button:hover {
+      background-color: #003e82;
+    }
+
+    .order-section {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .order-section h2 {
+      font-size: 1.5em;
+    }
+
+    .order-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .order-list li {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+
+    .remove-button {
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .remove-button:hover {
+      background-color: #cc0000;
+    }
+    .purchase-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .purchase-button:hover {
+      background-color: #45a049;
+    }
+
+    .paypal-form {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .paypal-input {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>UNT TechMart</h1>
+  </div>
+  <div class="menu">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('laptops') }}">Laptops</a>
+    <a href="{{ url_for('books') }}">Books</a>
+    <a href="{{ url_for('accessories') }}">Tech Accessories</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+  </div>
+  <div class="content">
+    <div class="laptop-container">
+      <img class="laptop-icon" src="{{ url_for('static', filename='images/hp1.jpeg') }}" alt="HP Laptop">
+      <div class="laptop-title">HP Pavilion 15</div>
+      <div class="laptop-description">Powerful HP laptop with a fast processor and crisp display.</div>
+      <div class="laptop-price">$899.99</div>
+      <button class="order-button" data-item="HP Pavilion 15" data-price="899.99">Order</button>
+    </div>
+    <div class="laptop-container">
+      <img class="laptop-icon" src="{{ url_for('static', filename='images/dell1.jpeg') }}" alt="Dell Laptop">
+      <div class="laptop-title">Dell XPS 13</div>
+      <div class="laptop-description">Dell's flagship laptop with a slim design and excellent performance.</div>
+      <div class="laptop-price">$1,199.99</div>
+      <button class="order-button" data-item="Dell XPS 13" data-price="1199.99">Order</button>
+    </div>
+    <div class="laptop-container">
+      <img class="laptop-icon" src="{{ url_for('static', filename='images/macos.jpeg') }}" alt="MacBook">
+      <div class="laptop-title">Apple MacBook Air</div>
+      <div class="laptop-description">Sleek and lightweight MacBook with a stunning Retina display.</div>
+      <div class="laptop-price">$1,299.99</div>
+      <button class="order-button" data-item="Apple MacBook Air" data-price="1299.99">Order</button>
+    </div>
+    <div class="laptop-container">
+      <img class="laptop-icon" src="{{ url_for('static', filename='images/microsoft_surface.jpeg') }}" alt="Microsoft Surface Laptop">
+      <div class="laptop-title">Microsoft Surface Laptop</div>
+      <div class="laptop-description">Ultra-light and versatile laptop with a high-resolution PixelSense touchscreen display.</div>
+      <div class="laptop-price">$999.99</div>
+      <button class="order-button" data-item="Microsoft Surface Laptop" data-price="999.99">Order</button>
+    </div>
+  </div>
+  <div class="order-section">
+    <h2>Your Orders</h2>
+    <ul class="order-list">
+      <!-- Selected items will be added here dynamically -->
+    </ul>
+    <div class="order-total">Total: $<span id="total-amount">0.00</span></div>
+  </div>
+    <button class="purchase-button" onclick="showPaypalForm()">Purchase</button>
+    <div class="paypal-form" id="paypal-form" style="display: none;">
+      <h3>Enter PayPal Details</h3>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="YOUR_PAYPAL_BUTTON_ID">
+        <input type="text" class="paypal-input" name="os0" placeholder="PayPal Email">
+        <input type="text" class="paypal-input" name="os1" placeholder="Shipping Address">
+        <input type="text" class "paypal-input" name="os2" placeholder="Contact Number">
+        <input type="text" class="paypal-input" name="os3" placeholder="Special Instructions">
+        <input type="submit" class="purchase-button" value="Pay with PayPal">
+      </form>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const orderButtons = document.querySelectorAll('.order-button');
+      const orderList = document.querySelector('.order-list');
+      const totalAmount = document.getElementById('total-amount');
+
+      let selectedItems = [];
+      let total = 0.0;
+
+      orderButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const item = button.getAttribute('data-item');
+          const price = parseFloat(button.getAttribute('data-price'));
+
+          if (!selectedItems.includes(item)) {
+            selectedItems.push(item);
+            total += price;
+
+            const listItem = document.createElement('li');
+            const listItemText = `${item} - $${price.toFixed(2)}`;
+            listItem.textContent = listItemText;
+
+            const removeButton = document.createElement('button');
+            removeButton.classList.add('remove-button');
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', function() {
+              const index = selectedItems.indexOf(item);
+              if (index !== -1) {
+                selectedItems.splice(index, 1);
+                total -= price;
+                orderList.removeChild(listItem);
+                totalAmount.textContent = total.toFixed(2);
+              }
+            });
+
+            listItem.appendChild(removeButton);
+            orderList.appendChild(listItem);
+            totalAmount.textContent = total.toFixed(2);
+          }
+        });
+      });
+    });
+    function showPaypalForm() {
+      const paypalForm = document.getElementById('paypal-form');
+      paypalForm.style.display = 'block';
+    }
+  </script>
+</body>
+
+</html>

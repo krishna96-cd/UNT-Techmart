@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background-color: #0056b3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            background-color: #0056b3;
+            padding: 10px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .menu a:hover {
+            background-color: #003e82;
+        }
+
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .contact-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .contact-description {
+            margin: 10px 0;
+        }
+
+        .contact-info {
+            font-size: 1.1em;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>UNT TechMart</h1>
+    </div>
+    <div class="menu">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('laptops') }}">Laptops</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('accessories') }}">Tech Accessories</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+    </div>
+    <div class="content">
+        <div class="contact-container">
+            <div class="contact-title">Contact Information</div>
+            <div class="contact-description">If you have any questions or need assistance, feel free to contact us:</div>
+            <div class="contact-info">Email: contactcentre@techmart.com</div>
+            <div class="contact-info">Phone: (123) 456-7890</div>
+            <div class="contact-info">Address: Denton Main Street, Texas, ZIP Code- 73523</div>
+        </div>
+    </div>
+</body>
+
+</html>

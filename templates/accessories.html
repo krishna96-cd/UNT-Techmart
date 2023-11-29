@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background-color: #0056b3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            background-color: #0056b3;
+            padding: 10px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .menu a:hover {
+            background-color: #003e82;
+        }
+
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .accessory-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .accessory-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .accessory-description {
+            margin: 10px 0;
+        }
+
+        .accessory-price {
+            color: #0056b3;
+            font-size: 1.1em;
+        }
+
+        .accessory-icon {
+            width: 100px; 
+            height: 150px; 
+            object-fit: cover;
+        }
+
+        .order-button {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .order-button:hover {
+            background-color: #003e82;
+        }
+
+        .order-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .order-section h2 {
+            font-size: 1.5em;
+        }
+
+        .order-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .order-list li {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .remove-button {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #cc0000;
+        }
+
+        .purchase-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .purchase-button:hover {
+            background-color: #45a049;
+        }
+
+        .paypal-form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .paypal-input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>UNT TechMart</h1>
+    </div>
+    <div class="menu">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('laptops') }}">Laptops</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('accessories') }}">Tech Accessories</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+    </div>
+    <div class="content">
+        <div class="accessory-container">
+            <img src="{{ url_for('static', filename='images/mouse.jpeg') }}" alt="Accessory 1" class="accessory-icon">
+            <div class="accessory-title">Wireless Mouse</div>
+            <div class="accessory-description">A high-performance wireless mouse for enhanced productivity.</div>
+            <div class="accessory-price">$19.99</div>
+            <button class="order-button" data-title="Wireless Mouse" data-price="19.99">Order</button>
+        </div>
+        <div class="accessory-container">
+            <img src="{{ url_for('static', filename='images/keyboard.jpeg') }}" alt="Accessory 2" class="accessory-icon">
+            <div class="accessory-title">Keyboard</div>
+            <div class="accessory-description">A sleek and ergonomic keyboard for comfortable typing.</div>
+            <div class="accessory-price">$29.99</div>
+            <button class="order-button" data-title="Keyboard" data-price="29.99">Order</button>
+        </div>
+        <div class="accessory-container">
+            <img src="{{ url_for('static', filename='images/headphones.jpeg') }}" alt="Accessory 3" class="accessory-icon">
+            <div class="accessory-title">Headphones</div>
+            <div class="accessory-description">High-quality headphones with noise-cancelling technology.</div>
+            <div class="accessory-price">$49.99</div>
+            <button class="order-button" data-title="Headphones" data-price="49.99">Order</button>
+        </div>
+        <div class="accessory-container">
+            <img src="{{ url_for('static', filename='images/usb.jpeg') }}" alt="Accessory 4" class="accessory-icon">
+            <div class="accessory-title">USB Hub</div>
+            <div class="accessory-description">A versatile USB hub for connecting multiple devices to your computer.</div>
+            <div class="accessory-price">$24.99</div>
+            <button class="order-button" data-title="USB Hub" data-price="24.99">Order</button>
+        </div>
+    </div>
+    <div class="order-section">
+        <h2>Your Orders</h2>
+        <ul class="order-list">
+         
+        </ul>
+        <div class="order-total">Total: $<span id="total-amount">0.00</span></div>
+        <button class="purchase-button" onclick="showPaypalForm()">Purchase</button>
+        <div class="paypal-form" id="paypal-form" style="display: none;">
+            <h3>Enter PayPal Details</h3>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="YOUR_PAYPAL_BUTTON_ID">
+                <input type="text" class="paypal-input" name="os0" placeholder="PayPal Email">
+                <input type="text" class="paypal-input" name="os1" placeholder="Shipping Address">
+                <input type="text" class="paypal-input" name="os2" placeholder="Contact Number">
+                <input type="text" class="paypal-input" name="os3" placeholder="Special Instructions">
+                <input type="submit" class="purchase-button" value="Pay with PayPal">
+            </form>
+        </div>
+    </div>
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            const orderButtons = document.querySelectorAll('.order-button');
+            const orderList = document.querySelector('.order-list');
+            const totalAmount = document.getElementById('total-amount');
+
+            let selectedItems = [];
+            let total = 0.0;
+
+            orderButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const itemTitle = button.getAttribute('data-title');
+                    const price = parseFloat(button.getAttribute('data-price'));
+
+                    if (!selectedItems.includes(itemTitle)) {
+                        selectedItems.push(itemTitle);
+                        total += price;
+
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${itemTitle} - $${price.toFixed(2)}`;
+
+                        const removeButton = document.createElement('button');
+                        removeButton.textContent = 'Remove';
+                        removeButton.classList.add('remove-button');
+
+                        removeButton.addEventListener('click', function () {
+                            const itemIndex = selectedItems.indexOf(itemTitle);
+                            if (itemIndex !== -1) {
+                                selectedItems.splice(itemIndex, 1);
+                                total -= price;
+                                orderList.removeChild(listItem);
+                                totalAmount.textContent = total.toFixed(2);
+                            }
+                        });
+
+                        listItem.appendChild(removeButton);
+                        orderList.appendChild(listItem);
+
+                        totalAmount.textContent = total.toFixed(2);
+                    }
+                });
+            });
+        });
+
+        function showPaypalForm() {
+            const paypalForm = document.getElementById('paypal-form');
+            paypalForm.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
